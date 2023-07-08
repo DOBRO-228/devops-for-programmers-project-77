@@ -1,0 +1,8 @@
+.history/
+
+# Terraform
+.terraform*
+*.auto.tfvars
+*.backup
+*.tfstate
+secrets*
