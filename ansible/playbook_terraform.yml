@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+    - name: Create terraform infrastructure (webservers)
+      community.general.terraform:
+        project_path: "{{ terraform_dir }}"
+        variables:
+          do_token: "{{ DO_TOKEN }}"
+          pvt_key: "{{ DO_SSH_PVT_KEY_PATH }}"
+        force_init: yes
+        state: present
+      # Используются outputs из terraform для получения данных о серверах (ip-адреса)
+      register: infra
+
+    - name: Show outputs
+      debug:
+        msg: "{{ infra.outputs }}"
+
+    - name: Show db_cluster
+      debug:
+        msg: "{{ infra.outputs.db_cluster.value }}"
+
+    - name: Show droplets
+      debug:
+        msg: "{{ infra.outputs.droplets.value }}"
+
+    - name: Create .env file
+      template:
+        src: "{{ playbook_dir }}/templates/.env.j2"
+        dest: "{{ playbook_dir }}/.env"
+
+    - name: Create inventory file
+      template:
+        src: "{{ playbook_dir }}/templates/inventory.ini.j2"
+        dest: "{{ playbook_dir }}/inventory.ini"

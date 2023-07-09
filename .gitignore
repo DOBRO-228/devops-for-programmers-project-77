@@ -5,4 +5,9 @@
 *.auto.tfvars
 *.backup
 *.tfstate
-secrets*
+secrets.tfvars*
+
+# Ansible
+vault-password
+.env
+inventory.ini
