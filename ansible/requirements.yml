@@ -1,6 +1,6 @@
 roles: 
 - geerlingguy.pip
+- geerlingguy.docker
 
 collections:
-- community.docker
 - community.digitalocean

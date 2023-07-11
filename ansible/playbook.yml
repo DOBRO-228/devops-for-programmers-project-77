@@ -5,7 +5,7 @@
   become: yes
   roles:
     - role: geerlingguy.pip
-  collections: community.docker
+    - role: geerlingguy.docker
 
   tasks:
 
@@ -13,13 +13,11 @@
       docker_image:
         name: redmine:latest
         source: pull
-      tags: prepare
 
     - name: Update .env file
       template:
         src: "{{ playbook_dir }}/.env"
         dest: "{{ server_env_path }}"
-      tags: deploy
 
     - name: Run Redmine container
       docker_container:

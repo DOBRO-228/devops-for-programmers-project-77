@@ -11,21 +11,8 @@
           do_token: "{{ DO_TOKEN }}"
           pvt_key: "{{ DO_SSH_PVT_KEY_PATH }}"
         force_init: yes
-        state: present
-      # Используются outputs из terraform для получения данных о серверах (ip-адреса)
+        state: "{{ terraform_state }}"
       register: infra
-
-    - name: Show outputs
-      debug:
-        msg: "{{ infra.outputs }}"
-
-    - name: Show db_cluster
-      debug:
-        msg: "{{ infra.outputs.db_cluster.value }}"
-
-    - name: Show droplets
-      debug:
-        msg: "{{ infra.outputs.droplets.value }}"
 
     - name: Create .env file
       template:
