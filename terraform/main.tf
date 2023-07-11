@@ -18,34 +18,39 @@ data "digitalocean_ssh_key" "terraform" {
   name = "dobro_local"
 }
 
-# resource "digitalocean_certificate" "cert" {
-#   name    = "ssl-cert"
-#   type    = "lets_encrypt"
-#   domains = ["dobro-228.ru", "228.dobro-228.ru"]
-# }
+data "digitalocean_certificate" "cert" {
+  name    = "dobro-228"
+}
 
 resource "digitalocean_loadbalancer" "lb" {
   name   = "load-balancer"
   region = var.signapore_region
-  # redirect_http_to_https = true
+  redirect_http_to_https = true
+
+  forwarding_rule {
+
+    entry_port     = 443
+    entry_protocol = "https"
+
+    target_port     = 3000
+    target_protocol = "http"
+  
+    certificate_id = data.digitalocean_certificate.cert.id
+
+  }
 
   forwarding_rule {
 
     entry_port     = 80
     entry_protocol = "http"
 
-    # entry_port     = 443
-    # entry_protocol = "https"
-
-    target_port     = 8080
+    target_port     = 3000
     target_protocol = "http"
   
-    # certificate_id = digitalocean_certificate.cert.id
-
   }
 
   healthcheck {
-    port     = 8080
+    port     = 3000
     protocol = "http"
     path     = "/"
   }
@@ -101,6 +106,11 @@ resource "digitalocean_droplet" "web-2" {
     private_key = file(var.pvt_key)
     timeout     = "2m"
   }
+}
+
+resource "digitalocean_domain" "domain" {
+  name       = "228.dobro-228.ru"
+  ip_address = digitalocean_loadbalancer.lb.ip
 }
 
 output "droplets" {
