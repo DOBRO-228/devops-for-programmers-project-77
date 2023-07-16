@@ -1,9 +1,14 @@
 ---
 - hosts: localhost
   gather_facts: no
+  vars_prompt:
+    - name: domain_name
+      prompt: What is domain name (default is "228.dobro-228.ru")?
+      default: "228.dobro-228.ru"
+      private: false
+
 
   tasks:
-
     - name: Create terraform infrastructure (webservers)
       community.general.terraform:
         project_path: "{{ terraform_dir }}"
@@ -14,6 +19,7 @@
           datadog_app_key: "{{ DATADOG_APP_KEY }}"
         force_init: yes
         state: "{{ terraform_state }}"
+      tags: terraform_only
       register: infra
 
     - name: Create .env file

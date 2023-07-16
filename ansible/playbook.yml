@@ -34,13 +34,11 @@
       docker_image:
         name: redmine:latest
         source: pull
-      tags: deploy
 
     - name: Update .env file
       template:
         src: "{{ playbook_dir }}/.env"
         dest: "{{ server_env_path }}"
-      tags: deploy
 
     - name: Run Redmine container
       docker_container:
@@ -49,4 +47,3 @@
         state: started
         env_file: "{{ server_env_path }}"
         network_mode: host
-      tags: deploy
