@@ -10,6 +10,8 @@
         variables:
           do_token: "{{ DO_TOKEN }}"
           pvt_key: "{{ DO_SSH_PVT_KEY_PATH }}"
+          datadog_api_key: "{{ DATADOG_API_KEY }}"
+          datadog_app_key: "{{ DATADOG_APP_KEY }}"
         force_init: yes
         state: "{{ terraform_state }}"
       register: infra

@@ -13,3 +13,23 @@ variable "size" {
   type        = string
   default     = "s-2vcpu-2gb"
 }
+
+variable "do_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "pvt_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "datadog_api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "datadog_app_key" {
+  type      = string
+  sensitive = true
+}

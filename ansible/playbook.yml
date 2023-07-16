@@ -1,23 +1,46 @@
 ---
+- name: Setup all servers
+  hosts: all
+  become: true
+  vars:
+    datadog_api_key: "{{ DATADOG_API_KEY }}"
+    datadog_site: "{{ DATADOG_SITE }}"
+  tags: setup
 
-- hosts: webservers
+  pre_tasks:
+    - name: Apt update command
+      become: yes
+      ansible.builtin.command: apt update
 
-  become: yes
+    - name: Apt update
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
   roles:
-    - role: geerlingguy.pip
-    - role: geerlingguy.docker
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - datadog.datadog
+
+
+- name: Deploy Redmine app
+  hosts: webservers
+  become: true
+  tags:
+    - deploy
 
   tasks:
-
     - name: Pull Redmine Docker image
       docker_image:
         name: redmine:latest
         source: pull
+      tags: deploy
 
     - name: Update .env file
       template:
         src: "{{ playbook_dir }}/.env"
         dest: "{{ server_env_path }}"
+      tags: deploy
 
     - name: Run Redmine container
       docker_container:
