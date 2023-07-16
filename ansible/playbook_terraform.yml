@@ -3,7 +3,7 @@
   gather_facts: no
   vars_prompt:
     - name: domain_name
-      prompt: What is domain name (default is "228.dobro-228.ru")?
+      prompt: What is domain name?
       default: "228.dobro-228.ru"
       private: false
 

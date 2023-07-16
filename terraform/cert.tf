@@ -1,3 +1,3 @@
 data "digitalocean_certificate" "cert" {
-  name    = "dobro-228"
+  name = "dobro-228"
 }

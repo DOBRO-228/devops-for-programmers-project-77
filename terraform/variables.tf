@@ -35,6 +35,6 @@ variable "datadog_app_key" {
 }
 
 variable "domain_name" {
-  type      = string
-  default     = "228.dobro-228.ru"
+  type    = string
+  default = "228.dobro-228.ru"
 }
