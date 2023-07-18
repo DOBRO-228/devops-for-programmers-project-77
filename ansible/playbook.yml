@@ -8,9 +8,6 @@
   tags: setup
 
   pre_tasks:
-    - name: Apt update command
-      become: yes
-      ansible.builtin.command: apt update
 
     - name: Apt update
       ansible.builtin.apt:
